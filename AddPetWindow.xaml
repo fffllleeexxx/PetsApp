@@ -1,0 +1,23 @@
+﻿<Window x:Class="PetsApp.AddPetWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PetsApp"
+        mc:Ignorable="d"
+        Title="AddPetWindow" Height="450" Width="800">
+    <Grid>
+        <StackPanel Margin="10">
+            <TextBlock Text="Select Pet:" Margin="0,0,0,10"/>
+            <ComboBox x:Name="cmbPet" Margin="0,0,0,10">
+                <ComboBoxItem Content="Ра"/>
+                <ComboBoxItem Content="Нуби"/>
+            </ComboBox>
+            <TextBlock Text="Description:" Margin="0,0,0,10"/>
+            <TextBox x:Name="txtDescription" Margin="0,0,0,10"/>
+            <TextBlock Text="Image Path:" Margin="0,0,0,10"/>
+            <TextBox x:Name="txtImagePath" Margin="0,0,0,10"/>
+            <Button Content="Add Pet" Width="100" Click="btnAddPet_Click" HorizontalAlignment="Right"/>
+        </StackPanel>
+    </Grid>
+</Window>

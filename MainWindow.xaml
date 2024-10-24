@@ -21,6 +21,7 @@
                 <ComboBoxItem Content="Description (A-Z)"/>
                 <ComboBoxItem Content="Description (Z-A)"/>
             </ComboBox>
+            <Button Content="Add Pet" Width="100" Click="btnAddPet_Click" Margin="20,0,0,0"/>
         </StackPanel>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <StackPanel x:Name="petStackPanel" Margin="10" />

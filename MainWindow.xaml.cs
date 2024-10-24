@@ -18,7 +18,8 @@ namespace PetsApp
     public partial class MainWindow : Window
     {
         private Users currentUser;
-        private IQueryable<Pet> petsQuery;
+        private List<Pet> originalPets;
+        private List<Pet> filteredPets;
 
         public MainWindow(Users user)
         {
@@ -31,121 +32,109 @@ namespace PetsApp
         {
             using (var context = new PetsModelContainer())
             {
-                petsQuery = context.Pet.AsQueryable();
+                var query = context.Pet.AsQueryable();
 
                 if (currentUser.Role == "Админ")
                 {
-                    petsQuery = context.Pet.AsQueryable();
+                    query = context.Pet.AsQueryable();
                 }
                 else if (currentUser.Role == "Ра")
                 {
-                    petsQuery = context.Pet.Where(p => p.Name == "Ра").AsQueryable();
+                    query = context.Pet.Where(p => p.Name == "Ра").AsQueryable();
                 }
                 else if (currentUser.Role == "Нуби")
                 {
-                    petsQuery = context.Pet.Where(p => p.Name == "Нуби").AsQueryable();
+                    query = context.Pet.Where(p => p.Name == "Нуби").AsQueryable();
                 }
 
-                ApplySearch();
+                originalPets = query.ToList();
+                filteredPets = originalPets.ToList();
                 ApplySort();
             }
         }
 
         private void ApplySearch()
         {
-            using (var context = new PetsModelContainer())
+            if (!string.IsNullOrEmpty(txtSearch.Text))
             {
-                var query = context.Pet.AsQueryable();
-
-                if (!string.IsNullOrEmpty(txtSearch.Text))
-                {
-                    query = query.Where(p => p.Description.Contains(txtSearch.Text));
-                }
-
-                petsQuery = query;
-                ApplySort();
+                filteredPets = originalPets.Where(p => p.Description.Contains(txtSearch.Text)).ToList();
             }
+            else
+            {
+                filteredPets = originalPets.ToList();
+            }
+
+            ApplySort();
         }
 
         private void ApplySort()
         {
-            using (var context = new PetsModelContainer())
+            switch (cmbSort.SelectedIndex)
             {
-                var query = petsQuery;
-
-                switch (cmbSort.SelectedIndex)
-                {
-                    case 0: // Name (A-Z)
-                        query = query.OrderBy(p => p.Name);
-                        break;
-                    case 1: // Name (Z-A)
-                        query = query.OrderByDescending(p => p.Name);
-                        break;
-                    case 2: // Description (A-Z)
-                        query = query.OrderBy(p => p.Description);
-                        break;
-                    case 3: // Description (Z-A)
-                        query = query.OrderByDescending(p => p.Description);
-                        break;
-                }
-
-                petsQuery = query;
-                DisplayPets();
+                case 0: // Name (A-Z)
+                    filteredPets = filteredPets.OrderBy(p => p.Name).ToList();
+                    break;
+                case 1: // Name (Z-A)
+                    filteredPets = filteredPets.OrderByDescending(p => p.Name).ToList();
+                    break;
+                case 2: // Description (A-Z)
+                    filteredPets = filteredPets.OrderBy(p => p.Description).ToList();
+                    break;
+                case 3: // Description (Z-A)
+                    filteredPets = filteredPets.OrderByDescending(p => p.Description).ToList();
+                    break;
             }
+
+            DisplayPets();
         }
 
         private void DisplayPets()
         {
             petStackPanel.Children.Clear();
 
-            using (var context = new PetsModelContainer())
+            foreach (var pet in filteredPets)
             {
-                var pets = petsQuery.ToList();
-
-                foreach (var pet in pets)
+                var petPanel = new StackPanel
                 {
-                    var petPanel = new StackPanel
-                    {
-                        Orientation = Orientation.Vertical,
-                        Margin = new Thickness(0, 50, 0, 0) // Отступ в 50 пикселей между записями
-                    };
+                    Orientation = Orientation.Vertical,
+                    Margin = new Thickness(0, 50, 0, 0) // Отступ в 50 пикселей между записями
+                };
 
-                    var headerPanel = new StackPanel
-                    {
-                        Orientation = Orientation.Horizontal
-                    };
+                var headerPanel = new StackPanel
+                {
+                    Orientation = Orientation.Horizontal
+                };
 
-                    var nameTextBlock = new TextBlock
-                    {
-                        Text = pet.Name,
-                        FontSize = 20,
-                        FontWeight = FontWeights.Bold,
-                        Margin = new Thickness(0, 0, 10, 0)
-                    };
+                var nameTextBlock = new TextBlock
+                {
+                    Text = pet.Name,
+                    FontSize = 20,
+                    FontWeight = FontWeights.Bold,
+                    Margin = new Thickness(0, 0, 10, 0)
+                };
 
-                    var image = new Image
-                    {
-                        Source = new BitmapImage(new Uri(pet.ImagePath, UriKind.Absolute)),
-                        Width = 100,
-                        Height = 100,
-                        Margin = new Thickness(200, 0, 0, 0) // Отступ в 200 пикселей
-                    };
+                var image = new Image
+                {
+                    Source = new BitmapImage(new Uri(pet.ImagePath, UriKind.Absolute)),
+                    Width = 100,
+                    Height = 100,
+                    Margin = new Thickness(200, 0, 0, 0) // Отступ в 200 пикселей
+                };
 
-                    headerPanel.Children.Add(nameTextBlock);
-                    headerPanel.Children.Add(image);
+                headerPanel.Children.Add(nameTextBlock);
+                headerPanel.Children.Add(image);
 
-                    var descriptionTextBlock = new TextBlock
-                    {
-                        Text = pet.Description,
-                        FontSize = 14,
-                        Margin = new Thickness(0, 20, 0, 0) // Отступ в 20 пикселей между заголовком и описанием
-                    };
+                var descriptionTextBlock = new TextBlock
+                {
+                    Text = pet.Description,
+                    FontSize = 14,
+                    Margin = new Thickness(0, 20, 0, 0) // Отступ в 20 пикселей между заголовком и описанием
+                };
 
-                    petPanel.Children.Add(headerPanel);
-                    petPanel.Children.Add(descriptionTextBlock);
+                petPanel.Children.Add(headerPanel);
+                petPanel.Children.Add(descriptionTextBlock);
 
-                    petStackPanel.Children.Add(petPanel);
-                }
+                petStackPanel.Children.Add(petPanel);
             }
         }
 
@@ -157,6 +146,13 @@ namespace PetsApp
         private void cmbSort_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ApplySort();
+        }
+
+        private void btnAddPet_Click(object sender, RoutedEventArgs e)
+        {
+            AddPetWindow addPetWindow = new AddPetWindow();
+            addPetWindow.ShowDialog();
+            LoadData(); // Обновляем данные после добавления новой записи
         }
     }
 }
