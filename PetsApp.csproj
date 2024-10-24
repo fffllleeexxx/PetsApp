@@ -150,9 +150,19 @@
       <DependentUpon>PetsModel.edmx</DependentUpon>
       <LastGenOutput>PetsModel.cs</LastGenOutput>
     </Content>
+    <Resource Include="Resources\Нуби1.jpg" />
+    <Resource Include="Resources\Нуби2.jpg" />
+    <Resource Include="Resources\Нуби3.jpg" />
+    <Resource Include="Resources\Нуби4.jpg" />
+    <Resource Include="Resources\Нуби5.jpg" />
+    <Resource Include="Resources\Ра1.jpg" />
+    <Resource Include="Resources\Ра2.jpg" />
+    <Resource Include="Resources\Ра3.jpg" />
+    <Resource Include="Resources\Ра4.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

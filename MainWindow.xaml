@@ -7,7 +7,22 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Margin="10">
+            <TextBlock Text="Search:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <TextBox x:Name="txtSearch" Width="200" VerticalAlignment="Center" TextChanged="txtSearch_TextChanged"/>
+            <TextBlock Text="Sort by:" VerticalAlignment="Center" Margin="20,0,10,0"/>
+            <ComboBox x:Name="cmbSort" Width="200" VerticalAlignment="Center" SelectionChanged="cmbSort_SelectionChanged">
+                <ComboBoxItem Content="Name (A-Z)"/>
+                <ComboBoxItem Content="Name (Z-A)"/>
+                <ComboBoxItem Content="Description (A-Z)"/>
+                <ComboBoxItem Content="Description (Z-A)"/>
+            </ComboBox>
+        </StackPanel>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <StackPanel x:Name="petStackPanel" Margin="10" />
         </ScrollViewer>
     </Grid>
