@@ -23,6 +23,7 @@
             </ComboBox>
             <Button Content="Add Pet" Width="100" Click="btnAddPet_Click" Margin="20,0,0,0"/>
         </StackPanel>
+        <Button Content="Выход" Width="100" Height="30" Background="Red" Foreground="White" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0" Click="btnExit_Click"/>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <StackPanel x:Name="petStackPanel" Margin="10" />
         </ScrollViewer>

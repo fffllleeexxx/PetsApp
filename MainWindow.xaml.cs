@@ -71,16 +71,16 @@ namespace PetsApp
         {
             switch (cmbSort.SelectedIndex)
             {
-                case 0: // Name (A-Z)
+                case 0: 
                     filteredPets = filteredPets.OrderBy(p => p.Name).ToList();
                     break;
-                case 1: // Name (Z-A)
+                case 1: 
                     filteredPets = filteredPets.OrderByDescending(p => p.Name).ToList();
                     break;
-                case 2: // Description (A-Z)
+                case 2: 
                     filteredPets = filteredPets.OrderBy(p => p.Description).ToList();
                     break;
-                case 3: // Description (Z-A)
+                case 3: 
                     filteredPets = filteredPets.OrderByDescending(p => p.Description).ToList();
                     break;
             }
@@ -97,7 +97,7 @@ namespace PetsApp
                 var petPanel = new StackPanel
                 {
                     Orientation = Orientation.Vertical,
-                    Margin = new Thickness(0, 50, 0, 0) // Отступ в 50 пикселей между записями
+                    Margin = new Thickness(0, 50, 0, 0) 
                 };
 
                 var headerPanel = new StackPanel
@@ -118,7 +118,7 @@ namespace PetsApp
                     Source = new BitmapImage(new Uri(pet.ImagePath, UriKind.Absolute)),
                     Width = 100,
                     Height = 100,
-                    Margin = new Thickness(200, 0, 0, 0) // Отступ в 200 пикселей
+                    Margin = new Thickness(200, 0, 0, 0) 
                 };
 
                 headerPanel.Children.Add(nameTextBlock);
@@ -128,7 +128,7 @@ namespace PetsApp
                 {
                     Text = pet.Description,
                     FontSize = 14,
-                    Margin = new Thickness(0, 20, 0, 0) // Отступ в 20 пикселей между заголовком и описанием
+                    Margin = new Thickness(0, 20, 0, 0) 
                 };
 
                 petPanel.Children.Add(headerPanel);
@@ -152,7 +152,14 @@ namespace PetsApp
         {
             AddPetWindow addPetWindow = new AddPetWindow();
             addPetWindow.ShowDialog();
-            LoadData(); // Обновляем данные после добавления новой записи
+            LoadData(); 
+        }
+
+        private void btnExit_Click(object sender, RoutedEventArgs e)
+        {
+            LoginWindow loginWindow = new LoginWindow();
+            loginWindow.Show();
+            this.Close();
         }
     }
 }
